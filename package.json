@@ -1,0 +1,19 @@
+{
+  "name": "teampulse",
+  "version": "1.0.0",
+  "description": "TeamPulse - Weekly Report Generator & Team Dashboard (Technical SE Assignment)",
+  "scripts": {
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "seed": "npm run seed --prefix server",
+    "test": "npm test --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "keywords": ["mern", "weekly-report", "dashboard", "rbac"],
+  "author": "",
+  "license": "ISC"
+}
