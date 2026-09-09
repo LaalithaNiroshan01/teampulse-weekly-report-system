@@ -25,9 +25,29 @@ app.use(helmet({
 }));
 
 // Cross-Origin Resource Sharing with strict credentials policy
+// Dynamic Cross-Origin Resource Sharing
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true;
+  if (process.env.CLIENT_URL && process.env.CLIENT_URL !== '*') {
+    const urls = process.env.CLIENT_URL.split(',').map((u) => u.trim().replace(/\/+$/, ''));
+    if (urls.includes(origin.replace(/\/+$/, ''))) return true;
+  }
+  if (/^http:\/\/localhost(:\d+)?$/i.test(origin)) return true;
+  if (/^https:\/\/.*\.vercel\.app$/i.test(origin)) return true;
+  return !process.env.CLIENT_URL || process.env.CLIENT_URL === '*';
+};
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || '*',
-  credentials: true
+  origin: (origin, callback) => {
+    if (isAllowedOrigin(origin)) {
+      callback(null, origin || true);
+    } else {
+      callback(new Error(`Origin ${origin} not allowed by CORS`));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Limit request body payload size to protect against body buffer exhaustion
