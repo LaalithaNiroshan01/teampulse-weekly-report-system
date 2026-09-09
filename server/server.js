@@ -58,6 +58,8 @@ app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(sanitizeInput);
 
 // Lightweight health check endpoint for container orchestrators and monitoring probes
+app.get('/', (req, res) => { res.json({ service: 'TeamPulse API Service', status: 'online', healthCheck: '/api/health', version: '1.0.0' }); });
+
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
