@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -78,7 +78,7 @@ if (process.env.NODE_ENV !== 'test') {
     // Auto-seed if database has no users (first boot or in-memory)
     const User = require('./models/User');
     const userCount = await User.countDocuments();
-    if (userCount === 0 && process.env.AUTO_SEED === 'true' && process.env.NODE_ENV !== 'production') {
+    if (userCount === 0 && process.env.AUTO_SEED === 'true') {
       console.log('Database is empty. Automatically running demo seed...');
       const seedDatabase = require('./seed/seedData');
       await seedDatabase();
