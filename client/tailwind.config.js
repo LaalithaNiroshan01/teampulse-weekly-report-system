@@ -25,11 +25,10 @@ export default {
         }
       },
       boxShadow: {
-        'card': '0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.05)',
-        'card-hover': '0 12px 24px -6px rgba(15, 23, 42, 0.08), 0 4px 8px -4px rgba(15, 23, 42, 0.04)',
-        'glow-sky': '0 0 25px -4px rgba(14, 165, 233, 0.3)',
-        'glow-indigo': '0 0 25px -4px rgba(99, 102, 241, 0.3)',
-        'glow-purple': '0 0 25px -4px rgba(168, 85, 247, 0.3)',
+        'subtle': '0 1px 2px 0 rgba(15, 23, 42, 0.05)',
+        'card': '0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04)',
+        'elevated': '0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04)',
+        'modal': '0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05)',
       }
     },
   },

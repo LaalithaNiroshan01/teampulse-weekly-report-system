@@ -10,6 +10,7 @@ import BlockersSection from '../components/reports/BlockersSection';
 import AchievementsSection from '../components/reports/AchievementsSection';
 import HoursBreakdownInput from '../components/reports/HoursBreakdownInput';
 import VersionHistoryViewer from '../components/reports/VersionHistoryViewer';
+import ReportPrintDesignerModal from '../components/reports/ReportPrintDesignerModal';
 import {
   FileText,
   ArrowLeft,
@@ -33,6 +34,7 @@ export const ReportDetailPage = () => {
   const [report, setReport] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -101,28 +103,30 @@ export const ReportDetailPage = () => {
           <div>
             <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
               <FileText className="w-5 h-5 text-slate-800" />
-              Week {report.weekNumber} Report
+              Week {report.weekNumber}, {report.year} Report
             </h1>
-            <p className="text-xs text-slate-500">
-              Submitted by {report.userId?.name} ({report.userId?.title || 'Team Member'})
+            <p className="text-xs text-slate-500 mt-0.5">
+              Submitted by {report.userId?.name} ({report.userId?.title || report.userId?.department || 'Team Member'})
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => window.print()}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition shadow-2xs"
+            type="button"
+            onClick={() => setIsPrintModalOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-subtle"
+            title="Open Report Print Designer"
           >
-            <Printer className="w-3.5 h-3.5" />
-            Print
+            <Printer className="w-3.5 h-3.5 text-slate-500" />
+            Print Report
           </button>
 
           {isOwner && report.status === 'draft' && (
             <button
               type="button"
               onClick={handleDeleteDraft}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-rose-600 hover:text-rose-700 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 transition shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-medium text-rose-600 hover:text-rose-700 bg-white hover:bg-rose-50 border border-slate-200 transition cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
               Delete Draft
@@ -132,7 +136,7 @@ export const ReportDetailPage = () => {
           {canEdit && (
             <Link
               to={`/reports/${report._id}/edit`}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition cursor-pointer"
             >
               <FileEdit className="w-3.5 h-3.5" />
               Edit Report
@@ -142,7 +146,7 @@ export const ReportDetailPage = () => {
           {isManager && report.status === 'submitted' && (
             <Link
               to={`/review/${report._id}`}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition cursor-pointer"
             >
               <CheckSquare className="w-3.5 h-3.5" />
               Review Report
@@ -175,7 +179,7 @@ export const ReportDetailPage = () => {
       )}
 
       {/* Meta Header Card */}
-      <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+      <div className="p-5 bg-white rounded-2xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
         <div>
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">
             Author
@@ -326,6 +330,13 @@ export const ReportDetailPage = () => {
           currentVersionNumber={report.versions.length}
         />
       )}
+
+      {/* Print Designer Modal */}
+      <ReportPrintDesignerModal
+        isOpen={isPrintModalOpen}
+        onClose={() => setIsPrintModalOpen(false)}
+        report={report}
+      />
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FileText, ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle2, AlertCircle, X } from 'lucide-react';
+import { SUGGESTED_JOB_TITLES } from '../utils/sampleTasks';
 
 export const LoginPage = () => {
   const [isRegisterTab, setIsRegisterTab] = useState(window.location.pathname === '/register');
@@ -12,6 +13,8 @@ export const LoginPage = () => {
   const [department, setDepartment] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [showAllTitles, setShowAllTitles] = useState(false);
 
   const { login, register } = useAuth();
   const navigate = useNavigate();
@@ -46,16 +49,15 @@ export const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 relative overflow-hidden flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <div className="w-13 h-13 rounded-2xl bg-slate-900 flex items-center justify-center text-white shadow-lg">
-            <FileText className="w-7 h-7" />
-          </div>
+      <div className="relative z-10 sm:mx-auto sm:w-full sm:max-w-md text-center">
+        <div className="flex justify-center mb-2">
+          <img
+            src="/logo.png"
+            alt="TeamPulse"
+            className="h-12 w-auto object-contain"
+          />
         </div>
-        <h2 className="mt-4 text-center text-2xl font-black text-slate-900 tracking-tight">
-          TeamPulse
-        </h2>
-        <p className="mt-1 text-center text-xs text-slate-500 font-medium">
+        <p className="mt-2 text-center text-xs text-slate-500 font-medium">
           Weekly report workspace for engineering teams
         </p>
       </div>
@@ -112,30 +114,92 @@ export const LoginPage = () => {
                     value={name}
                     placeholder="e.g. Jane Doe"
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 text-xs"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block font-medium text-slate-700 mb-1">Job Title</label>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block font-medium text-slate-700 text-xs">
+                      Job Title
+                    </label>
+                    <span className="text-[10px] text-slate-400">
+                      Pick a suggestion or type your own
+                    </span>
+                  </div>
+                  <div className="relative">
                     <input
                       type="text"
+                      list="register-job-titles"
                       value={title}
-                      placeholder="e.g. Backend Engineer"
+                      placeholder="e.g. Full Stack Developer, DevOps..."
                       onChange={(e) => setTitle(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900"
+                      className="w-full pl-3 pr-8 py-2 rounded-xl border border-slate-200 bg-white focus:ring-1 focus:ring-slate-900 text-xs transition"
                     />
+                    {title && (
+                      <button
+                        type="button"
+                        onClick={() => setTitle('')}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 cursor-pointer"
+                        title="Clear job title"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
-                  <div>
-                    <label className="block font-medium text-slate-700 mb-1">Department</label>
-                    <input
-                      type="text"
-                      value={department}
-                      placeholder="e.g. Platform Team"
-                      onChange={(e) => setDepartment(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900"
-                    />
+                  <datalist id="register-job-titles">
+                    {SUGGESTED_JOB_TITLES.map((t) => (
+                      <option key={t} value={t} />
+                    ))}
+                  </datalist>
+
+                  {/* Quick suggestion pills */}
+                  <div className="mt-2 space-y-1.5">
+                    <div className="flex items-center justify-between text-[10px]">
+                      <span className="font-semibold text-slate-400 uppercase tracking-wider">
+                        Suggested Titles
+                      </span>
+                      {SUGGESTED_JOB_TITLES.length > 6 && (
+                        <button
+                          type="button"
+                          onClick={() => setShowAllTitles(!showAllTitles)}
+                          className="font-medium text-sky-600 hover:text-sky-700 cursor-pointer"
+                        >
+                          {showAllTitles ? 'Show fewer' : `+${SUGGESTED_JOB_TITLES.length - 6} more`}
+                        </button>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {(showAllTitles ? SUGGESTED_JOB_TITLES : SUGGESTED_JOB_TITLES.slice(0, 6)).map((t) => {
+                        const isSelected = title.trim().toLowerCase() === t.toLowerCase();
+                        return (
+                          <button
+                            key={t}
+                            type="button"
+                            onClick={() => setTitle(isSelected ? '' : t)}
+                            className={`text-[10px] px-2 py-0.5 rounded-lg border transition cursor-pointer ${
+                              isSelected
+                                ? 'bg-slate-900 text-white border-slate-900 font-semibold shadow-xs'
+                                : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+                            }`}
+                          >
+                            {isSelected ? `✓ ${t}` : t}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
+                </div>
+
+                <div>
+                  <label className="block font-medium text-slate-700 mb-1">Department</label>
+                  <input
+                    type="text"
+                    value={department}
+                    placeholder="e.g. Platform Team"
+                    onChange={(e) => setDepartment(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 text-xs"
+                  />
                 </div>
               </>
             )}

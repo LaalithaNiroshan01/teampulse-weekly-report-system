@@ -1,4 +1,4 @@
-# TeamPulse — Weekly Report Generator & Team Dashboard
+# TeamPulse - Weekly Report Generator & Team Dashboard
 
 **TeamPulse** is a robust MERN application with two roles (`member`, `manager`), a shared login/register screen, private drafts, immutable submission content, manager review, team analytics and nine connected views built for the Technical SE Assignment.
 
@@ -31,13 +31,13 @@ Build: `npm run build --prefix client`. Tests: `npm test`.
 
 All demo passwords are `Password123!` and intended only for the local assignment demo.
 
-| Account | Role |
-|---|---|
+| Account                  | Role            |
+| ------------------------ | --------------- |
 | alex.manager@company.com | Manager / Admin |
-| sarah@company.com | Member |
-| david@company.com | Member |
-| elena@company.com | Member |
-| marcus@company.com | Member |
+| sarah@company.com        | Member          |
+| david@company.com        | Member          |
+| elena@company.com        | Member          |
+| marcus@company.com       | Member          |
 
 The seed creates four members, a manager, projects and three reporting weeks relative to the seed date. It includes Submitted, Needs Correction, Draft, Approved and Not Started examples, plus complete version snapshots. Existing historic snapshots in a pre-fix database cannot be reconstructed reliably; the seed improvements apply to a newly seeded demo. New application submissions contain full snapshots.
 
@@ -82,6 +82,7 @@ JWT Bearer tokens are held in browser local storage and expire according to `JWT
 ## AI Intelligence & Reporting Assistant
 
 TeamPulse includes an integrated AI Reporting Assistant drawer powered by a **dual-engine architecture**:
+
 - **Live Generative LLM Engine**: Seamlessly integrates with Google Gemini (`gemini-1.5-flash`) or OpenAI (`gpt-4o-mini`) via API keys configured in `server/.env` (`GEMINI_API_KEY` or `OPENAI_API_KEY`).
 - **Autonomous Smart Heuristic Engine**: Automatically engages if no third-party API key is provided, providing instant cross-team analytics, blocker diagnostics, and workload breakdowns locally without external network dependencies.
 - **Strict Privacy Isolation**: In compliance with enterprise confidentiality rules, draft reports are permanently excluded from LLM context prompts; only authorized, formally submitted reports are ingested.
@@ -89,6 +90,7 @@ TeamPulse includes an integrated AI Reporting Assistant drawer powered by a **du
 ## Security Architecture & OWASP Hardening
 
 The application is hardened against common web and API vulnerabilities:
+
 - **HTTP Security Headers**: Powered by `helmet` to mitigate MIME-sniffing, clickjacking, and XSS attacks.
 - **Fingerprint Masking**: `x-powered-by` header disabled to prevent runtime exposure.
 - **DoS Mitigation**: JSON and URL-encoded payloads capped at 2MB; rate limiters protect authentication (`authLimiter`), AI querying (`aiLimiter`), and general API endpoints.

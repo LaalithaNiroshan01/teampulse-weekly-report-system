@@ -79,8 +79,8 @@ export const MemberProfilePage = () => {
             <User className="w-5 h-5 text-slate-800" />
             {member.name}
           </h1>
-          <p className="text-xs text-slate-500">
-            Performance summary and report history.
+          <p className="text-xs text-slate-500 mt-0.5">
+            Engineering profile, compliance performance, and report archive
           </p>
         </div>
       </div>
@@ -88,9 +88,9 @@ export const MemberProfilePage = () => {
       {/* Member Info Card & Statistics Header */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Contact info */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs space-y-3 md:col-span-1">
+        <div className="p-5 bg-white rounded-2xl border border-slate-200 space-y-3 md:col-span-1">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-base shadow-sm">
+            <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-base">
               {member.name.charAt(0)}
             </div>
             <div>
@@ -116,31 +116,31 @@ export const MemberProfilePage = () => {
         </div>
 
         {/* Basic Stats Grid */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-          <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex flex-col justify-center">
-            <span className="text-2xl font-black text-slate-900">{stats.totalReports}</span>
-            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-1">
+        <div className="p-5 bg-white rounded-2xl border border-slate-200 md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-center">
+            <span className="text-2xl font-bold text-slate-900">{stats.totalReports}</span>
+            <span className="text-[11px] font-medium text-slate-500 mt-1">
               Total Reports
             </span>
           </div>
 
-          <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-100 flex flex-col justify-center">
-            <span className="text-2xl font-black text-emerald-800">{stats.approvalRate}%</span>
-            <span className="text-[11px] font-semibold text-emerald-700 uppercase tracking-wider mt-1">
+          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-center">
+            <span className="text-2xl font-bold text-slate-900">{stats.approvalRate}%</span>
+            <span className="text-[11px] font-medium text-slate-500 mt-1">
               Approval Rate
             </span>
           </div>
 
-          <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex flex-col justify-center">
-            <span className="text-2xl font-black text-slate-900">{stats.totalTasksCompleted}</span>
-            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-1">
-              Tasks Done
+          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-center">
+            <span className="text-2xl font-bold text-slate-900">{stats.totalTasksCompleted}</span>
+            <span className="text-[11px] font-medium text-slate-500 mt-1">
+              Tasks Completed
             </span>
           </div>
 
-          <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex flex-col justify-center">
-            <span className="text-2xl font-black text-slate-900">{stats.totalHoursLogged}h</span>
-            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mt-1">
+          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-center">
+            <span className="text-2xl font-bold text-slate-900">{stats.totalHoursLogged}h</span>
+            <span className="text-[11px] font-medium text-slate-500 mt-1">
               Hours Logged
             </span>
           </div>
@@ -148,7 +148,7 @@ export const MemberProfilePage = () => {
       </div>
 
       {/* Member's Report History */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div className="p-5 border-b border-slate-100 flex items-center justify-between">
           <div>
             <h3 className="text-sm font-bold text-slate-900">

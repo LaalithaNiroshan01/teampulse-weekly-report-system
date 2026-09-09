@@ -132,10 +132,10 @@ export const UserManagementPage = () => {
         <div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
             <Users className="w-5 h-5 text-slate-800" />
-            User Management
+            Team Members & Access
           </h1>
-          <p className="text-xs text-slate-500">
-            Manage team members, roles, and access.
+          <p className="text-xs text-slate-500 mt-0.5">
+            Manage your engineering team roster, assign review permissions, and invite members.
           </p>
         </div>
 
@@ -144,7 +144,7 @@ export const UserManagementPage = () => {
             setCreatedInviteCreds(null);
             setIsInviteOpen(true);
           }}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm self-start sm:self-auto active:scale-95"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition self-start sm:self-auto cursor-pointer"
         >
           <UserPlus className="w-4 h-4" />
           Invite Member
@@ -169,7 +169,7 @@ export const UserManagementPage = () => {
       {isLoading ? (
         <LoadingSpinner text="Loading roster..." />
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50/80 text-slate-600 uppercase font-semibold text-[11px] tracking-wider border-b border-slate-100">

@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   LayoutDashboard,
-  FileText,
   FilePlus,
   Users,
   FolderKanban,
@@ -84,6 +83,14 @@ export const Sidebar = ({ isOpen, onClose }) => {
         <div className="flex flex-col h-full p-4 justify-between overflow-hidden">
           {/* Top section: Title + Nav */}
           <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+            {/* Mobile Header Brand */}
+            <div className="lg:hidden px-3 pb-3 mb-2 border-b border-slate-100 flex items-center justify-between">
+              <img src="/logo.png" alt="TeamPulse" className="h-6 w-auto object-contain" />
+              <span className="text-[9px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded border border-slate-200">
+                v1.0
+              </span>
+            </div>
+
             {/* Section title - Pinned at top */}
             <div className="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center justify-between shrink-0">
               <span>{isManager ? 'Management' : 'Workspace'}</span>

@@ -1,13 +1,40 @@
-import React from 'react';
-import { Plus, Trash2, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Plus, Trash2, CheckCircle2, Sparkles } from 'lucide-react';
+import SampleTaskModal from './SampleTaskModal';
+import { SAMPLE_TASKS_LIBRARY } from '../../utils/sampleTasks';
 
 const priorities = ['Low', 'Medium', 'High', 'Urgent'];
 const statuses = ['Done', 'In Progress', 'Blocked'];
 
 export const TaskCompletedTable = ({ tasks = [], onChange, readOnly = false }) => {
+  const [isSampleModalOpen, setIsSampleModalOpen] = useState(false);
+
   const handleTaskChange = (index, field, value) => {
     if (readOnly) return;
     const updated = [...tasks];
+
+    // If user typed/selected a known sample task name, auto-fill standard defaults if deliverable is blank
+    if (field === 'taskName') {
+      const match = SAMPLE_TASKS_LIBRARY.find(
+        (st) => st.taskName.toLowerCase().trim() === value.toLowerCase().trim()
+      );
+      if (match && (!updated[index].outputDeliverable || updated[index].outputDeliverable.trim() === '')) {
+        updated[index] = {
+          ...updated[index],
+          taskName: value,
+          priority: match.priority || updated[index].priority,
+          plannedPercentage: match.plannedPercentage ?? updated[index].plannedPercentage,
+          actualPercentage: match.actualPercentage ?? updated[index].actualPercentage,
+          status: match.status || updated[index].status,
+          plannedTime: match.plannedTime || updated[index].plannedTime,
+          timeSpent: match.timeSpent || updated[index].timeSpent,
+          outputDeliverable: match.outputDeliverable || updated[index].outputDeliverable
+        };
+        onChange(updated);
+        return;
+      }
+    }
+
     updated[index] = { ...updated[index], [field]: value };
     onChange(updated);
   };
@@ -29,6 +56,18 @@ export const TaskCompletedTable = ({ tasks = [], onChange, readOnly = false }) =
     ]);
   };
 
+  const handleSelectSampleTask = (sampleTask) => {
+    if (readOnly) return;
+    const emptyIndex = tasks.findIndex((t) => !t.taskName || t.taskName.trim() === '');
+    if (emptyIndex !== -1 && tasks.length === 1 && !tasks[0].taskName) {
+      const updated = [...tasks];
+      updated[emptyIndex] = { ...updated[emptyIndex], ...sampleTask };
+      onChange(updated);
+    } else {
+      onChange([...tasks, sampleTask]);
+    }
+  };
+
   const removeTask = (index) => {
     if (readOnly) return;
     const updated = tasks.filter((_, idx) => idx !== index);
@@ -48,20 +87,51 @@ export const TaskCompletedTable = ({ tasks = [], onChange, readOnly = false }) =
           </p>
         </div>
         {!readOnly && (
-          <button
-            type="button"
-            onClick={addTask}
-            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 transition"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            Add Task
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsSampleModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-900 hover:bg-amber-100 border border-amber-200 shadow-xs transition cursor-pointer"
+              title="Search and insert from sample tasks library"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+              Sample Tasks
+            </button>
+            <button
+              type="button"
+              onClick={addTask}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 transition cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              Add Task
+            </button>
+          </div>
         )}
       </div>
 
       {tasks.length === 0 ? (
-        <div className="p-6 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200 text-xs text-slate-500">
-          No tasks added yet. {!readOnly && 'Click "Add Task" to record work.'}
+        <div className="p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200 text-xs text-slate-500 space-y-3">
+          <p>No tasks added yet. Pick from sample tasks or click "Add Task" to start.</p>
+          {!readOnly && (
+            <div className="flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setIsSampleModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-900 hover:bg-amber-100 border border-amber-200 shadow-xs transition cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                Browse Sample Tasks
+              </button>
+              <button
+                type="button"
+                onClick={addTask}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 transition cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Add Blank Task
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="overflow-x-auto border border-slate-200 rounded-xl shadow-xs bg-white">
@@ -89,6 +159,7 @@ export const TaskCompletedTable = ({ tasks = [], onChange, readOnly = false }) =
                     ) : (
                       <input
                         type="text"
+                        list="completed-task-suggestions"
                         placeholder="e.g. Implement OAuth Endpoint"
                         value={task.taskName}
                         onChange={(e) => handleTaskChange(idx, 'taskName', e.target.value)}
@@ -250,6 +321,23 @@ export const TaskCompletedTable = ({ tasks = [], onChange, readOnly = false }) =
             </tbody>
           </table>
         </div>
+      )}
+
+      {!readOnly && (
+        <>
+          <datalist id="completed-task-suggestions">
+            {SAMPLE_TASKS_LIBRARY.map((st) => (
+              <option key={st.id} value={st.taskName} />
+            ))}
+          </datalist>
+
+          <SampleTaskModal
+            isOpen={isSampleModalOpen}
+            onClose={() => setIsSampleModalOpen(false)}
+            onSelectTask={handleSelectSampleTask}
+            targetType="completed"
+          />
+        </>
       )}
     </div>
   );

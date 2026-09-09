@@ -53,26 +53,23 @@ export const ReportHistoryPage = () => {
         <div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
             <History className="w-5 h-5 text-slate-800" />
-            Report History
+            Weekly Reports & History
           </h1>
-          <p className="text-xs text-slate-500">
-            Past reports, submission records, and review feedback.
+          <p className="text-xs text-slate-500 mt-0.5">
+            View your weekly submissions, work-in-progress drafts, and manager review notes.
           </p>
         </div>
         <Link
           to="/reports/new"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm self-start sm:self-auto active:scale-95"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
-          New Report
+          Create Weekly Report
         </Link>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-1.5 bg-white p-2 rounded-xl border border-slate-200 shadow-2xs text-xs">
-        <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider px-2">
-          Status:
-        </span>
+      <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl text-xs">
         {[
           { label: 'All Reports', value: '' },
           { label: 'Drafts', value: 'draft' },
@@ -83,18 +80,16 @@ export const ReportHistoryPage = () => {
           <button
             key={tab.value}
             onClick={() => { setStatusFilter(tab.value); setPage(1); }}
-            className={`px-3 py-1.5 rounded-lg font-medium transition ${
+            className={`px-3 py-1.5 rounded-lg text-xs transition cursor-pointer ${
               statusFilter === tab.value
-                ? 'bg-slate-900 text-white font-medium shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100'
+                ? 'bg-white text-slate-900 font-semibold shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 font-medium'
             }`}
           >
             {tab.label}
           </button>
         ))}
       </div>
-
-      <div className="flex gap-4 items-center"><button className="px-3 py-2 border rounded disabled:opacity-40" disabled={page <= 1 || isLoading} onClick={() => setPage(page-1)}>Previous</button><span>Page {page} of {Math.max(1,pagination.pages || 1)}</span><button className="px-3 py-2 border rounded disabled:opacity-40" disabled={page >= pagination.pages || isLoading} onClick={() => setPage(page+1)}>Next</button></div>
       {/* Error Notice */}
       {error && (
         <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
@@ -122,7 +117,7 @@ export const ReportHistoryPage = () => {
           }
         />
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50/80 text-slate-600 uppercase font-semibold text-[11px] tracking-wider border-b border-slate-100">
@@ -254,6 +249,29 @@ export const ReportHistoryPage = () => {
                 })}
               </tbody>
             </table>
+          </div>
+
+          {/* Table Pagination Footer */}
+          <div className="p-3.5 border-t border-slate-100 flex items-center justify-between text-xs bg-slate-50/50">
+            <span className="text-slate-500 font-medium">
+              Page {page} of {Math.max(1, pagination.pages || 1)}
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-medium transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                disabled={page <= 1 || isLoading}
+                onClick={() => setPage(page - 1)}
+              >
+                Previous
+              </button>
+              <button
+                className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-medium transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                disabled={page >= (pagination.pages || 1) || isLoading}
+                onClick={() => setPage(page + 1)}
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -11,6 +11,7 @@ import AchievementsSection from '../components/reports/AchievementsSection';
 import HoursBreakdownInput from '../components/reports/HoursBreakdownInput';
 import VersionHistoryViewer from '../components/reports/VersionHistoryViewer';
 import ReviewActionModal from '../components/reports/ReviewActionModal';
+import ReportPrintDesignerModal from '../components/reports/ReportPrintDesignerModal';
 import {
   CheckSquare,
   CheckCircle2,
@@ -19,7 +20,8 @@ import {
   Calendar,
   User,
   History,
-  Lock
+  Lock,
+  Printer
 } from 'lucide-react';
 
 export const ManagerReviewPage = () => {
@@ -31,6 +33,7 @@ export const ManagerReviewPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -113,27 +116,36 @@ export const ManagerReviewPage = () => {
           <div>
             <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
               <CheckSquare className="w-5 h-5 text-slate-800" />
-              Review Report: {report.userId?.name}
+              Review Report — {report.userId?.name}
             </h1>
-            <p className="text-xs text-slate-500">
-              Review submitted work and approve or request revisions.
+            <p className="text-xs text-slate-500 mt-0.5">
+              Week {report.weekNumber}, {report.year} · Evaluate deliverables and hours to approve or request revisions
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <StatusBadge status={report.status} />
+          <button
+            type="button"
+            onClick={() => setIsPrintModalOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-subtle"
+            title="Open Report Print Designer"
+          >
+            <Printer className="w-3.5 h-3.5 text-slate-500" />
+            Print Report
+          </button>
           {isSubmitted ? (
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm active:scale-95"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition cursor-pointer"
             >
               <CheckSquare className="w-3.5 h-3.5" />
-              Take Review Action
+              Review Decision
             </button>
           ) : (
-            <span className="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-xl">
+            <span className="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-2 rounded-xl border border-slate-200">
               Reviewed ({report.status})
             </span>
           )}
@@ -153,7 +165,7 @@ export const ManagerReviewPage = () => {
         <div className="flex items-center gap-2">
           <Lock className="w-4 h-4 text-slate-400" />
           <span>
-            <strong>Review Mode:</strong> Report content is read-only. Reviews record decisions and feedback on this snapshot.
+            <strong>Audit Mode:</strong> Report submission is immutable. Your decision and comments will be attached to this revision.
           </span>
         </div>
         <span className="text-[11px] font-semibold text-slate-700">
@@ -162,7 +174,7 @@ export const ManagerReviewPage = () => {
       </div>
 
       {/* Author & Period Summary Card */}
-      <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+      <div className="p-5 bg-white rounded-2xl border border-slate-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
         <div>
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block mb-1">
             Team Member
@@ -276,6 +288,13 @@ export const ManagerReviewPage = () => {
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleReviewDecision}
         isSubmitting={isSubmittingReview}
+      />
+
+      {/* Print Designer Modal */}
+      <ReportPrintDesignerModal
+        isOpen={isPrintModalOpen}
+        onClose={() => setIsPrintModalOpen(false)}
+        report={report}
       />
     </div>
   );

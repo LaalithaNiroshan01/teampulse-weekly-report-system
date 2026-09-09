@@ -1,43 +1,37 @@
 import React from 'react';
-import { Send, Percent, AlertCircle, AlertOctagon, TrendingUp, Users } from 'lucide-react';
+import { Send, Percent, AlertCircle, AlertOctagon } from 'lucide-react';
 
 export const MetricsCards = ({ metrics = {} }) => {
   const cards = [
     {
-      title: 'Submitted Reports',
+      title: 'Reports Submitted',
       value: metrics.totalSubmitted ?? 0,
-      subtext: 'Submitted this week',
+      subtext: 'Submitted for this reporting period',
       icon: Send,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-100'
+      alert: false
     },
     {
-      title: 'On-time Compliance',
+      title: 'Compliance Rate',
       value: `${metrics.complianceRate ?? 0}%`,
       subtext: `${metrics.submittedCount ?? metrics.totalSubmitted ?? 0} submitted · ${metrics.pendingCount ?? 0} pending`,
       icon: Percent,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
-      borderColor: 'border-emerald-100'
+      alert: false
     },
     {
-      title: 'Needs Correction',
+      title: 'Revisions Requested',
       value: metrics.needsCorrectionCount ?? 0,
-      subtext: 'Awaiting member revision',
+      subtext: 'Reports awaiting member updates',
       icon: AlertCircle,
-      color: 'text-amber-600',
-      bgColor: 'bg-amber-50',
-      borderColor: 'border-amber-100'
+      alert: (metrics.needsCorrectionCount ?? 0) > 0,
+      alertColor: 'text-amber-700 bg-amber-50 border-amber-200'
     },
     {
-      title: 'Open Team Blockers',
+      title: 'Active Blockers',
       value: metrics.openBlockersCount ?? 0,
-      subtext: 'Across active projects',
+      subtext: 'Unresolved issues across team projects',
       icon: AlertOctagon,
-      color: 'text-rose-600',
-      bgColor: 'bg-rose-50',
-      borderColor: 'border-rose-100'
+      alert: (metrics.openBlockersCount ?? 0) > 0,
+      alertColor: 'text-rose-700 bg-rose-50 border-rose-200'
     }
   ];
 
@@ -48,32 +42,27 @@ export const MetricsCards = ({ metrics = {} }) => {
         return (
           <div
             key={idx}
-            className="relative overflow-hidden p-5 bg-white rounded-2xl border border-slate-200/90 shadow-xs card-hover-lift"
+            className="p-5 bg-white rounded-2xl border border-slate-200 flex flex-col justify-between"
           >
-            {/* Top decorative accent line */}
-            <div className={`absolute top-0 left-0 right-0 h-[2px] ${
-              idx === 0 ? 'bg-blue-600' :
-              idx === 1 ? 'bg-emerald-600' :
-              idx === 2 ? 'bg-amber-500' :
-              'bg-rose-500'
-            }`} />
-
-            <div className="flex items-center justify-between mb-3 pt-1">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <div className="flex items-center justify-between gap-2 mb-3">
+              <span className="text-xs font-semibold text-slate-500 tracking-tight">
                 {card.title}
               </span>
-              <div className={`p-2 rounded-xl ${card.bgColor} ${card.color} shadow-2xs border border-white/60`}>
-                <Icon className="w-4 h-4" />
-              </div>
+              <Icon className="w-4 h-4 text-slate-400 shrink-0" />
             </div>
 
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-extrabold text-slate-900 tracking-tight font-sans">
+              <span className="text-3xl font-bold text-slate-900 tracking-tight">
                 {card.value}
               </span>
+              {card.alert && (
+                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${card.alertColor}`}>
+                  Action required
+                </span>
+              )}
             </div>
 
-            <p className="text-[11px] text-slate-500 mt-2 font-medium leading-relaxed">
+            <p className="text-xs text-slate-500 mt-2 font-normal leading-relaxed">
               {card.subtext}
             </p>
           </div>
