@@ -16,7 +16,7 @@ import {
 } from 'recharts';
 import { TrendingUp, BarChart3, PieChart as PieIcon, Clock } from 'lucide-react';
 
-const COLORS = ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EC4899', '#6366F1'];
+const COLORS = ['#0284c7', '#10b981', '#8b5cf6', '#f59e0b', '#ec4899', '#64748b'];
 
 export const DashboardCharts = ({ chartsData = {} }) => {
   const {
@@ -26,77 +26,64 @@ export const DashboardCharts = ({ chartsData = {} }) => {
     memberStatusChart = []
   } = chartsData;
 
+  const tooltipStyle = {
+    backgroundColor: '#0f172a',
+    borderRadius: '8px',
+    border: '1px solid #334155',
+    color: '#ffffff',
+    fontSize: '11px',
+    padding: '8px 12px'
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
       {/* 1. Tasks Completed Trend Over Time */}
-      <div className="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-slate-200/80 shadow-xs card-hover-lift">
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-slate-100 text-slate-800 border border-slate-200 shadow-2xs">
-              <TrendingUp className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 tracking-tight">
-                Tasks Completed Trend
-              </h3>
-              <p className="text-[11px] text-slate-400 font-medium">Weekly velocity and completed tasks</p>
-            </div>
+      <div className="bg-white p-5 rounded-2xl border border-slate-200">
+        <div className="flex items-center gap-2.5 mb-4">
+          <TrendingUp className="w-4 h-4 text-slate-500 shrink-0" />
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+              Tasks Completed Trend
+            </h3>
+            <p className="text-xs text-slate-500">Weekly team task volume across past cycles</p>
           </div>
         </div>
         <div className="h-64 w-full">
           {tasksTrend.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={tasksTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="taskTrendGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0284c7" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#0284c7" stopOpacity={0.0} />
-                  </linearGradient>
-                </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="weekNumber" tick={{ fontSize: 11 }} stroke="#94a3b8" />
                 <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="#94a3b8" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#1e293b',
-                    borderRadius: '8px',
-                    color: '#fff',
-                    fontSize: '12px',
-                    border: 'none'
-                  }}
-                />
+                <Tooltip contentStyle={tooltipStyle} />
                 <Area
                   type="monotone"
                   dataKey="tasksCompleted"
                   name="Tasks Completed"
                   stroke="#0284c7"
-                  strokeWidth={2.5}
-                  fillOpacity={1}
-                  fill="url(#taskTrendGrad)"
+                  strokeWidth={2}
+                  fill="#0284c7"
+                  fillOpacity={0.08}
                 />
               </AreaChart>
             </ResponsiveContainer>
           ) : (
             <div className="h-full flex items-center justify-center text-xs text-slate-400">
-              No trend data available
+              No trend data available for this period
             </div>
           )}
         </div>
       </div>
 
       {/* 2. Workload / Task Distribution by Project */}
-      <div className="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-slate-200/80 shadow-xs card-hover-lift">
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-slate-100 text-slate-800 border border-slate-200 shadow-2xs">
-              <PieIcon className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 tracking-tight">
-                Tasks by Project
-              </h3>
-              <p className="text-[11px] text-slate-400 font-medium">Distribution across active projects</p>
-            </div>
+      <div className="bg-white p-5 rounded-2xl border border-slate-200">
+        <div className="flex items-center gap-2.5 mb-4">
+          <PieIcon className="w-4 h-4 text-slate-500 shrink-0" />
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+              Tasks by Project
+            </h3>
+            <p className="text-xs text-slate-500">Distribution across active project categories</p>
           </div>
         </div>
         <div className="h-64 w-full">
@@ -111,7 +98,7 @@ export const DashboardCharts = ({ chartsData = {} }) => {
                   cy="50%"
                   innerRadius={55}
                   outerRadius={80}
-                  paddingAngle={4}
+                  paddingAngle={3}
                 >
                   {projectDistribution.map((entry, index) => (
                     <Cell
@@ -121,41 +108,29 @@ export const DashboardCharts = ({ chartsData = {} }) => {
                   ))}
                 </Pie>
                 <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                    backdropFilter: 'blur(8px)',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(51, 65, 85, 0.5)',
-                    color: '#fff',
-                    fontSize: '11px',
-                    boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)'
-                  }}
+                  contentStyle={tooltipStyle}
                   formatter={(val, name, item) => [`${val} tasks (${item.payload.hours || 0}h)`, name]}
                 />
-                <Legend iconType="circle" wrapperStyle={{ fontSize: '11px' }} />
+                <Legend iconType="circle" wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
               </PieChart>
             </ResponsiveContainer>
           ) : (
             <div className="h-full flex items-center justify-center text-xs text-slate-400">
-              No project task data for this week
+              No project distribution logged for this week
             </div>
           )}
         </div>
       </div>
 
       {/* 3. Team Time Spent by Task Type */}
-      <div className="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-slate-200/80 shadow-xs card-hover-lift">
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-slate-100 text-slate-800 border border-slate-200 shadow-2xs">
-              <Clock className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 tracking-tight">
-                Logged Hours by Category
-              </h3>
-              <p className="text-[11px] text-slate-400 font-medium">Development, testing, and meetings breakdown</p>
-            </div>
+      <div className="bg-white p-5 rounded-2xl border border-slate-200">
+        <div className="flex items-center gap-2.5 mb-4">
+          <Clock className="w-4 h-4 text-slate-500 shrink-0" />
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+              Logged Hours by Category
+            </h3>
+            <p className="text-xs text-slate-500">Effort breakdown across development, testing, and meetings</p>
           </div>
         </div>
         <div className="h-64 w-full">
@@ -166,41 +141,29 @@ export const DashboardCharts = ({ chartsData = {} }) => {
                 <XAxis dataKey="taskType" tick={{ fontSize: 11 }} stroke="#94a3b8" />
                 <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="#94a3b8" />
                 <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                    backdropFilter: 'blur(8px)',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(51, 65, 85, 0.5)',
-                    color: '#fff',
-                    fontSize: '11px',
-                    boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)'
-                  }}
+                  contentStyle={tooltipStyle}
                   formatter={(val) => [`${val} hours`, 'Time Spent']}
                 />
-                <Bar dataKey="hours" name="Hours Logged" fill="#10B981" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="hours" name="Hours Logged" fill="#0284c7" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           ) : (
             <div className="h-full flex items-center justify-center text-xs text-slate-400">
-              No time breakdown logged for this week
+              No hourly breakdown logged for this week
             </div>
           )}
         </div>
       </div>
 
       {/* 4. Report Submission Status by Member */}
-      <div className="bg-white/95 backdrop-blur-sm p-6 rounded-2xl border border-slate-200/80 shadow-xs card-hover-lift">
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-slate-100 text-slate-800 border border-slate-200 shadow-2xs">
-              <BarChart3 className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 tracking-tight">
-                Status by Member
-              </h3>
-              <p className="text-[11px] text-slate-400 font-medium">Submission state across team roster</p>
-            </div>
+      <div className="bg-white p-5 rounded-2xl border border-slate-200">
+        <div className="flex items-center gap-2.5 mb-4">
+          <BarChart3 className="w-4 h-4 text-slate-500 shrink-0" />
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+              Status by Team Member
+            </h3>
+            <p className="text-xs text-slate-500">Submission states across active team roster</p>
           </div>
         </div>
         <div className="h-64 w-full">
@@ -210,26 +173,18 @@ export const DashboardCharts = ({ chartsData = {} }) => {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} stroke="#94a3b8" />
                 <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="#94a3b8" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#1e293b',
-                    borderRadius: '8px',
-                    color: '#fff',
-                    fontSize: '12px',
-                    border: 'none'
-                  }}
-                />
-                <Legend wrapperStyle={{ fontSize: '11px' }} />
-                <Bar dataKey="approved" name="Approved" fill="#10B981" stackId="a" />
-                <Bar dataKey="submitted" name="Submitted" fill="#0284C7" stackId="a" />
-                <Bar dataKey="needsCorrection" name="Needs Correction" fill="#F59E0B" stackId="a" />
-                <Bar dataKey="draft" name="Draft" fill="#94A3B8" stackId="a" />
-                <Bar dataKey="notStarted" name="Not Started" fill="#F43F5E" stackId="a" />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '8px' }} />
+                <Bar dataKey="approved" name="Approved" fill="#10b981" stackId="a" />
+                <Bar dataKey="submitted" name="Submitted" fill="#0284c7" stackId="a" />
+                <Bar dataKey="needsCorrection" name="Needs Correction" fill="#f59e0b" stackId="a" />
+                <Bar dataKey="draft" name="Draft" fill="#94a3b8" stackId="a" />
+                <Bar dataKey="notStarted" name="Not Started" fill="#f43f5e" stackId="a" />
               </BarChart>
             </ResponsiveContainer>
           ) : (
             <div className="h-full flex items-center justify-center text-xs text-slate-400">
-              No member status data available
+              No member status records for this week
             </div>
           )}
         </div>

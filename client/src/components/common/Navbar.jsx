@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
-  FileText,
   LogOut,
   Menu
 } from 'lucide-react';
@@ -31,23 +30,15 @@ export const Navbar = ({ onOpenAi, onToggleSidebar }) => {
                 <Menu className="w-5 h-5" />
               </button>
             )}
-            <Link to={isManager ? '/dashboard' : '/reports'} className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center text-white shadow-xs group-hover:bg-slate-800 transition-colors">
-                <FileText className="w-4 h-4" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-slate-900 tracking-tight text-sm block leading-tight">
-                    TeamPulse
-                  </span>
-                  <span className="text-[9px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded border border-slate-200">
-                    v1.0
-                  </span>
-                </div>
-                <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">
-                  Weekly Workspace
-                </span>
-              </div>
+            <Link to={isManager ? '/dashboard' : '/reports'} className="flex items-center gap-2.5 group">
+              <img
+                src="/logo.png"
+                alt="TeamPulse"
+                className="h-8 w-auto object-contain transition-opacity duration-150 group-hover:opacity-90"
+              />
+              <span className="text-[9px] font-semibold uppercase tracking-wider bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded border border-slate-200">
+                v1.0
+              </span>
             </Link>
           </div>
 

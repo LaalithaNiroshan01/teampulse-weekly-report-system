@@ -135,20 +135,20 @@ export const ProjectManagementPage = () => {
         <div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
             <FolderKanban className="w-5 h-5 text-slate-800" />
-            Projects
+            Project Categories
           </h1>
-          <p className="text-xs text-slate-500">
-            Manage work categories and project tags.
+          <p className="text-xs text-slate-500 mt-0.5">
+            Configure project tags used for weekly progress reporting and workload distribution.
           </p>
         </div>
 
         {isManager && (
           <button
             onClick={openCreateModal}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm self-start sm:self-auto active:scale-95"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition self-start sm:self-auto cursor-pointer"
           >
             <Plus className="w-4 h-4" />
-            New Project
+            New Category
           </button>
         )}
       </div>
@@ -156,38 +156,38 @@ export const ProjectManagementPage = () => {
       {/* Notifications */}
       {error && (
         <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-rose-600" />
+          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
           <span>{error}</span>
         </div>
       )}
       {success && (
         <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           <span>{success}</span>
         </div>
       )}
 
       {/* Projects Table */}
       {isLoading ? (
-        <LoadingSpinner text="Loading projects..." />
+        <LoadingSpinner text="Loading project categories..." />
       ) : projects.length === 0 ? (
         <EmptyState
           icon={FolderOpen}
-          title="No projects configured"
-          description="Create your first project or category to enable categorization of team work."
+          title="No project categories configured"
+          description="Create your first category to enable team members to tag their weekly work."
           action={
             isManager && (
               <button
                 onClick={openCreateModal}
-                className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold"
+                className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold cursor-pointer"
               >
-                Create Project
+                Create Category
               </button>
             )
           }
         />
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50/80 text-slate-600 uppercase font-semibold text-[11px] tracking-wider border-b border-slate-100">
@@ -195,7 +195,7 @@ export const ProjectManagementPage = () => {
                   <th className="py-3 px-4">Category Name</th>
                   <th className="py-3 px-3">Description</th>
                   <th className="py-3 px-3">Assigned Team</th>
-                  <th className="py-3 px-3">Usage Count</th>
+                  <th className="py-3 px-3">Report Usage</th>
                   <th className="py-3 px-3">Status</th>
                   {isManager && <th className="py-3 px-4 text-right">Actions</th>}
                 </tr>

@@ -27,7 +27,7 @@ const AppLayout = ({ children }) => {
   const [isAiOpen, setIsAiOpen] = useState(false);
 
   return (
-    <div className="h-screen w-full flex flex-col bg-slate-50/70 ambient-gradient overflow-hidden">
+    <div className="h-screen w-full flex flex-col bg-slate-50 overflow-hidden">
       <Navbar
         onOpenAi={() => setIsAiOpen(true)}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -44,19 +44,13 @@ const AppLayout = ({ children }) => {
       {/* Floating AI Chat Assistant Widget Button */}
       <button
         onClick={() => setIsAiOpen(true)}
-        className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/15 hover:shadow-xl hover:shadow-slate-900/20 hover:scale-[1.02] active:scale-95 transition-all duration-150 group cursor-pointer border border-slate-700/80"
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-3.5 py-2 rounded-full bg-slate-900 hover:bg-slate-800 text-white shadow-md hover:shadow-lg transition-all duration-150 group cursor-pointer border border-slate-800 text-xs font-medium"
         aria-label="Open AI Assistant"
         title="Chat with TeamPulse AI Assistant"
       >
-        <div className="relative">
-          <Bot className="w-4 h-4 text-slate-200 group-hover:text-white transition-colors" />
-          <span className="absolute -top-1 -right-1 flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
-          </span>
-        </div>
-        <span className="text-xs font-semibold tracking-tight text-white">AI Assistant</span>
-        <Sparkles className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-300 transition-colors" />
+        <Bot className="w-3.5 h-3.5 text-slate-300 group-hover:text-white transition-colors" />
+        <span>AI Assistant</span>
+        <Sparkles className="w-3 h-3 text-slate-400 group-hover:text-slate-200 transition-colors" />
       </button>
 
       <AiAssistantDrawer

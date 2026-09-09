@@ -283,10 +283,10 @@ export const ReportEditorPage = () => {
           <div>
             <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
               <FileText className="w-5 h-5 text-slate-800" />
-              {isEditMode ? `Edit Weekly Report (Wk ${weekNumber})` : 'New Weekly Report'}
+              {isEditMode ? `Edit Weekly Report · Week ${weekNumber}, ${year}` : `New Weekly Report · Week ${weekNumber}, ${year}`}
             </h1>
-            <p className="text-xs text-slate-500">
-              Document your weekly progress, achievements, and blockers.
+            <p className="text-xs text-slate-500 mt-0.5">
+              Reporting period: {weekStartDate || '—'} to {weekEndDate || '—'}
             </p>
           </div>
         </div>
@@ -298,7 +298,7 @@ export const ReportEditorPage = () => {
               type="button"
               onClick={handleDeleteDraft}
               disabled={isSaving}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:text-rose-700 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 transition shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium text-rose-600 hover:text-rose-700 bg-white hover:bg-rose-50 border border-slate-200 transition cursor-pointer"
               title="Delete Draft"
             >
               <Trash2 className="w-3.5 h-3.5" />
@@ -310,7 +310,7 @@ export const ReportEditorPage = () => {
               type="button"
               onClick={handleSaveDraft}
               disabled={isSaving}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition shadow-2xs"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition cursor-pointer"
             >
               <Save className="w-3.5 h-3.5" />
               Save Draft
@@ -320,10 +320,10 @@ export const ReportEditorPage = () => {
             type="button"
             onClick={handleSubmitReport}
             disabled={isSaving}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm active:scale-95"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition cursor-pointer"
           >
             <Send className="w-3.5 h-3.5" />
-            {reportStatus === 'needs_correction' ? 'Resubmit for Review' : 'Submit Report'}
+            {reportStatus === 'needs_correction' ? 'Resubmit for Review' : 'Submit for Review'}
           </button>
         </div>
       </div>
@@ -542,7 +542,7 @@ export const ReportEditorPage = () => {
                 type="button"
                 onClick={handleDeleteDraft}
                 disabled={isSaving}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-rose-600 hover:text-rose-700 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 transition shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-medium text-rose-600 hover:text-rose-700 bg-white hover:bg-rose-50 border border-slate-200 transition cursor-pointer"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Delete Draft</span>
@@ -554,7 +554,7 @@ export const ReportEditorPage = () => {
               type="button"
               onClick={handleSaveDraft}
               disabled={isSaving}
-              className="px-4 py-2.5 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition shadow-2xs"
+              className="px-4 py-2.5 rounded-xl text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition cursor-pointer"
             >
               Save as Draft
             </button>
@@ -562,7 +562,7 @@ export const ReportEditorPage = () => {
               type="button"
               onClick={handleSubmitReport}
               disabled={isSaving}
-              className="px-5 py-2.5 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm active:scale-95"
+              className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition cursor-pointer"
             >
               {reportStatus === 'needs_correction' ? 'Resubmit for Review' : 'Submit for Review'}
             </button>
